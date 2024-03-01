@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+$gutter: 1rem; //for primeflex grid system
+
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "../node_modules/primeng/resources/primeng.css";
+@import "../node_modules/primeflex/primeflex.scss";
+
+@import "primeng/resources/primeng.css";
+@import "assets/layout/styles/layout/layout.scss";
+@import "primeicons/primeicons.css";
+@import "assets/demo/styles/flags/flags.css";
+@import "assets/demo/styles/badges.scss";
+@import "assets/demo/styles/code.scss";
+@import "assets/demo/styles/badges.css";
+@import "assets/demo/styles/code.css";
