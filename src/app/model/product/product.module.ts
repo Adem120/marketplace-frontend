@@ -1,16 +1,17 @@
+import { Image } from "src/app/api/image";
+import { Categorie } from "./categorie.module";
+
 interface InventoryStatus {
   label: string;
   value: string;
 }
 export interface Product {
   id?: string;
-  code?: string;
-  name?: string;
+  titre?: string;
   description?: string;
-  price?: number;
-  quantity?: number;
-  inventoryStatus?: InventoryStatus;
-  category?: string;
-  image?: string;
-  rating?: number;
+  prix?: number;
+  quantite?: number;
+  category?: Categorie;
+  images?: Image[];
+  
 }

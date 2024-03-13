@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/api/product';
-import { MessageService } from 'primeng/api';
+import { Product } from 'src/app/model/product/product.module';
+import { MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/service/product.service';
+import { FilterService, SelectItemGroup } from 'primeng/api';
+import { AutoCompleteCompleteEvent } from 'src/app/model/product/autocomplet.module';
+import { CategorieService } from 'src/app/service/categorie.service';
+import { Categorie } from 'src/app/model/product/categorie.module';
+import { Subscription } from 'rxjs';
 
 @Component({
     templateUrl: './crud.component.html',
@@ -30,11 +35,51 @@ export class CrudComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    constructor(private productService: ProductService, private messageService: MessageService) { }
+    categorie!: Categorie;
+    categoriesfilter: Categorie[] = [];
+   
+     subscription!: Subscription;
+    categories: Categorie[] = [];
+    items: MenuItem[] | undefined;
+
+    activeIndex: number = 0;
+
+
+    onActiveIndexChange(event: number) {
+        this.activeIndex = event;
+    }
+    constructor( private productService: ProductService, private messageService: MessageService,private categorieservice:CategorieService) { }
 
     ngOnInit() {
-        this.productService.getProducts().then(data => this.products = data);
-
+        this.categorieservice.getCategorie().subscribe(data =>{
+            console.log(data);
+            this.categories = data;
+        })
+        
+        this.items = [
+            {
+                label: 'Personal',
+                command: (event: any) => this.messageService.add({severity:'info', summary:'First Step', detail: event.item.label})
+            },
+            {
+                label: 'Seat',
+                command: (event: any) => this.messageService.add({severity:'info', summary:'Second Step', detail: event.item.label})
+            },
+            {
+                label: 'Payment',
+                command: (event: any) => this.messageService.add({severity:'info', summary:'Third Step', detail: event.item.label})
+            },
+            {
+                label: 'Confirmation',
+                command: (event: any) => this.messageService.add({severity:'info', summary:'Last Step', detail: event.item.label})
+            }
+        ];
+     this .productService.getProducts().subscribe(data => {
+        this.products = data;
+           console.log(data);})
+      
+ 
+     
         this.cols = [
             { field: 'product', header: 'Product' },
             { field: 'price', header: 'Price' },
@@ -49,7 +94,11 @@ export class CrudComponent implements OnInit {
             { label: 'OUTOFSTOCK', value: 'outofstock' }
         ];
     }
-
+    ngOnDestroy() {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    }
     openNew() {
         this.product = {};
         this.submitted = false;
@@ -89,7 +138,7 @@ export class CrudComponent implements OnInit {
         this.submitted = false;
     }
 
-    saveProduct() {
+   /* saveProduct() {
         this.submitted = true;
 
         if (this.product.name?.trim()) {
@@ -134,8 +183,21 @@ export class CrudComponent implements OnInit {
         }
         return id;
     }
-
+*/
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+    }
+    filterCategorie(event: AutoCompleteCompleteEvent) {
+        let filtered: Categorie[] = [];
+        let query = event.query;
+
+        for (let i = 0; i < (this.categories as any[]).length; i++) {
+            let cat = (this.categories as any[])[i];
+            if (cat.nom.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filtered.push(cat);
+            }
+        }
+
+        this.categoriesfilter = filtered;
     }
 }
