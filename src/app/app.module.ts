@@ -42,6 +42,7 @@ import { InputTextModule } from 'primeng/inputtext';
     InputTextModule,
     FormsModule,
     PasswordModule,
+    
 
   ],
   providers: [HttpClient,ProductService],

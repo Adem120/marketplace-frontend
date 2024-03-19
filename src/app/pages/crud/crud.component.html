@@ -12,13 +12,16 @@
 
                 <ng-template pTemplate="right">
                     <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                    <button  pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
                 </ng-template>
             </p-toolbar>
-
-            <p-table #dt [value]="products" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['titre','prix','categorie','quantite']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
-              <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+           
+            <p-table  #dt  [value]="products"   [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['titre','prix','categorie','quantite']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
+             
+                  
+                 
+                <ng-template pTemplate="caption">
+                    <div     class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Manage Products</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
@@ -26,8 +29,9 @@
                         </span>
                     </div>
                 </ng-template> 
-                <ng-template pTemplate="header">
-                    <tr>
+              
+                <ng-template   pTemplate="header">
+                    <tr  >
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
@@ -41,8 +45,9 @@
                         <th></th>
                     </tr>
                 </ng-template>
-             <ng-template pTemplate="body" let-product>
-                    <tr>
+          
+             <ng-template     pTemplate="body" let-product  >
+                    <tr  >
                         <td>
                             <p-tableCheckbox [value]="product"></p-tableCheckbox>
                         </td>
@@ -80,56 +85,20 @@
                             </div>
                         </td>
                     </tr>
-                </ng-template> 
+                </ng-template>
+                <ng-template pTemplate="emptymessage" let-columns >
+                    <tr>
+                        <td [attr.colspan]="columns.length">
+                            <h5>No products found</h5>
+                        </td>
+                    </tr>
+                </ng-template>
+                
             </p-table>
+
         </div>
 
-        <p-dialog [(visible)]="productDialog" [style]="{width: '700px',height:'700px'}"  header="Product Details" [modal]="true" class="p-fluid">
-            <ng-template pTemplate="content">
-                <div class="field">
-                    <label for="name">Name</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="product.titre" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.titre}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.titre">Name is required.</small>
-                </div>
-                <div class="field">
-                    <label for="description">Description</label>
-                    <textarea id="description" pInputTextarea [(ngModel)]="product.description" required rows="3" cols="20"></textarea>
-                </div>
-                <div class="justify-content-left mb-3   ">
-                    <label for="price">Categorie</label>
-
-                    <p-autoComplete [(ngModel)]="categorie" [suggestions]="categoriesfilter" (completeMethod)="filterCategorie($event)" field="nom" [dropdown]="true" class="w-19rem">
-                        <ng-template let-cat pTemplate="item">
-                            <div class="flex align-items-center gap-2">
-                                <div>{{ cat.nom }}</div>
-                            </div>
-                        </ng-template>
-                    </p-autoComplete>
-                    <div class="field col">
-                        <label for="price">Prix</label>
-                        <p-inputNumber id="price" [(ngModel)]="product.prix" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
-                    </div>
-                </div>
-                
-                
-
-                <div class="formgrid grid">
-                    <div class="field col">
-                        <label for="price">Prix</label>
-                        <p-inputNumber id="price" [(ngModel)]="product.prix" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
-                    </div>
-                    <div class="field col">
-                        <label for="quantity">Quantite</label>
-                        <p-inputNumber id="quantity" [(ngModel)]="product.quantite"></p-inputNumber>
-                    </div>
-                </div>
-            </ng-template>
-
-            <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" ></button>
-            </ng-template>
-        </p-dialog>
+       
  
       <!--   <p-dialog [(visible)]="deleteProductDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
@@ -154,3 +123,4 @@
         </p-dialog>
     </div>
 </div>
+```

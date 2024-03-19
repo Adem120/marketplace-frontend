@@ -17,8 +17,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
-
-
+import { StepsModule } from 'primeng/steps';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
     imports: [
         CommonModule,
@@ -37,12 +37,13 @@ import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
         RadioButtonModule,
         InputNumberModule,
         DialogModule,
-        AutoCompleteModule
+        AutoCompleteModule,
+        StepsModule,
+        ProgressSpinnerModule
     ],
     declarations: [CrudComponent],
     providers: [],
     exports: [],
-    schemas: [NO_ERRORS_SCHEMA,CUSTOM_ELEMENTS_SCHEMA]
 
 
 })

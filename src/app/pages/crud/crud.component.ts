@@ -8,6 +8,7 @@ import { AutoCompleteCompleteEvent } from 'src/app/model/product/autocomplet.mod
 import { CategorieService } from 'src/app/service/categorie.service';
 import { Categorie } from 'src/app/model/product/categorie.module';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './crud.component.html',
@@ -43,12 +44,12 @@ export class CrudComponent implements OnInit {
     items: MenuItem[] | undefined;
 
     activeIndex: number = 0;
-
+   public  loading: boolean=true; ;
 
     onActiveIndexChange(event: number) {
         this.activeIndex = event;
     }
-    constructor( private productService: ProductService, private messageService: MessageService,private categorieservice:CategorieService) { }
+    constructor(private router: Router,private productService: ProductService, private messageService: MessageService,private categorieservice:CategorieService) { }
 
     ngOnInit() {
         this.categorieservice.getCategorie().subscribe(data =>{
@@ -56,28 +57,8 @@ export class CrudComponent implements OnInit {
             this.categories = data;
         })
         
-        this.items = [
-            {
-                label: 'Personal',
-                command: (event: any) => this.messageService.add({severity:'info', summary:'First Step', detail: event.item.label})
-            },
-            {
-                label: 'Seat',
-                command: (event: any) => this.messageService.add({severity:'info', summary:'Second Step', detail: event.item.label})
-            },
-            {
-                label: 'Payment',
-                command: (event: any) => this.messageService.add({severity:'info', summary:'Third Step', detail: event.item.label})
-            },
-            {
-                label: 'Confirmation',
-                command: (event: any) => this.messageService.add({severity:'info', summary:'Last Step', detail: event.item.label})
-            }
-        ];
-     this .productService.getProducts().subscribe(data => {
-        this.products = data;
-           console.log(data);})
-      
+     this.getallproduct();
+   
  
      
         this.cols = [
@@ -94,15 +75,30 @@ export class CrudComponent implements OnInit {
             { label: 'OUTOFSTOCK', value: 'outofstock' }
         ];
     }
+    getallproduct(){
+       
+    this.productService.getProducts().subscribe(
+        data => {
+    this.products = data;
+    this.loading = false;
+    console.log(this.products);
+    console.log(this.loading);
+            
+        },
+        error => {
+            console.error('Error fetching products:', error);
+            this.loading = true;
+        }
+        
+    );
+    }
     ngOnDestroy() {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
     }
     openNew() {
-        this.product = {};
-        this.submitted = false;
-        this.productDialog = true;
+       this.router.navigate(['pages/steps']);
     }
 
     deleteSelectedProducts() {
