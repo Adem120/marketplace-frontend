@@ -16,7 +16,7 @@
                 </ng-template>
             </p-toolbar>
            
-            <p-table  #dt  [value]="products"   [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['titre','prix','categorie','quantite']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table  #dt  [value]="products"   [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['titre','prix','categorie','quantite']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Affichage de {first} à {last} de {totalRecords} entrées" [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
              
                   
                  
@@ -35,13 +35,15 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="id">id <p-sortIcon field="id"></p-sortIcon></th>
-                        <th pSortableColumn="titre">titre <p-sortIcon field="titre"></p-sortIcon></th>
+                        <th pSortableColumn="id">Code <p-sortIcon field="id"></p-sortIcon></th>
+                        <th pSortableColumn="titre">Titre <p-sortIcon field="titre"></p-sortIcon></th>
+                        <th pSortableColumn="marque">Marque <p-sortIcon field="marque"></p-sortIcon></th>
                         <th>Image</th>
-                        <th pSortableColumn="prix">prix <p-sortIcon field="prix"></p-sortIcon></th>
+                        <th pSortableColumn="prix">Prix <p-sortIcon field="prix"></p-sortIcon></th>
                         <th pSortableColumn="categorie">categorie <p-sortIcon field="categorie"></p-sortIcon></th>
+                        <th *ngIf="productService.getrole()=='user'" pSortableColumn="etat">Etat <p-sortIcon field="etat"></p-sortIcon></th>
                         <th pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
-                        <th pSortableColumn="quantite">quantite <p-sortIcon field="quantite"></p-sortIcon></th>
+                        <th pSortableColumn="quantite">Quantite <p-sortIcon field="quantite"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -55,29 +57,38 @@
                             {{product.code || product.id}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Name</span>
+                            <span class="p-column-title">Titre</span>
                             {{product.titre}}
                         </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Marque</span>
+                            {{product.marque}}
+                        </td>
                         <td style="width:14%; min-width:10rem; " ><span class="p-column-title" >Image</span>
-                            <ng-container *ngFor="let img of product.imageliste ">
-                            <img  *ngIf="img.principale==1"  [src]="'http://127.0.0.1:8000'+img.path" [alt]="product.nom" width="100" class="shadow-4" />
+                            <ng-container *ngFor="let img of product.images ">
+                            <img loading="lazy" *ngIf="img.principale==1"  [src]="'data:image/png;base64,'+img.path" [alt]="product.nom" width="100" class="shadow-4" />
                             </ng-container>
                         </td>
                         <td style="width:14%; min-width:8rem;">
-                            <span class="p-column-title">Price</span>
-                            {{product.prix | currency:'USD'}}
+                            <span class="p-column-title">Prix</span>
+                            {{product.prix | currency:'D'}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Category</span>
                             {{product.categorie.nom}}
                         </td>
-                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Reviews</span>
-                            <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating>
+                        <td *ngIf="productService.getrole()=='admin'" style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Etat</span>
+                            {{product.etat}}
                         </td>
                         <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Status</span>
                             <span *ngIf="product.quantite>=50" [class]="'product-badge status-instock'">{{product.quantite}}</span>
                             <span *ngIf="product.quantite<50 && product.quantite>0" [class]="'product-badge status-lowstock'">{{product.quantite}}</span>
                         </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Reviews</span>
+                            <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating>
+                        </td>
+                       
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"></button>
@@ -86,13 +97,19 @@
                         </td>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="emptymessage" let-columns >
-                    <tr>
+                <ng-template  pTemplate="emptymessage" let-columns >
+                    <tr *ngIf="this.filtervalue==0">
                         <td [attr.colspan]="columns.length">
                             <h5>No products found</h5>
                         </td>
                     </tr>
+                    <tr *ngIf="loading ">
+                        <td  colspan="9" style="text-align: center;">
+                            <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+                        </td>
+                    </tr>
                 </ng-template>
+              
                 
             </p-table>
 

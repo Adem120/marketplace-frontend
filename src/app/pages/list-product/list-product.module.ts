@@ -1,8 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CrudRoutingModule } from './crud-routing.module';
-import { CrudComponent } from './crud.component';
+import { ListProductRoutingModule } from './list-product-routing.module';
+import {  ListProductComponent } from './list-product.component';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -19,10 +19,13 @@ import { DialogModule } from 'primeng/dialog';
 import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
 import { StepsModule } from 'primeng/steps';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TicketService } from 'src/app/service/ticketservice';
+import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
 @NgModule({
     imports: [
         CommonModule,
-        CrudRoutingModule,
+        ListProductRoutingModule,
         TableModule,
         FileUploadModule,
         FormsModule,
@@ -39,12 +42,14 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         DialogModule,
         AutoCompleteModule,
         StepsModule,
-        ProgressSpinnerModule
+        ProgressSpinnerModule,
+        CardModule,
+        TagModule
     ],
-    declarations: [CrudComponent],
-    providers: [],
+    declarations: [ListProductComponent],
+    providers: [TicketService],
     exports: [],
 
 
 })
-export class CrudModule { }
+export class ListProductModule { }

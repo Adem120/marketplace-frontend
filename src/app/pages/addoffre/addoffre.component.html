@@ -1,0 +1,67 @@
+
+<div class=" max-h-full bg-black-alpha-10">
+    <p-breadcrumb class="max-w-full" [model]="items" [home]="home"></p-breadcrumb>
+
+   <p-card>
+    <ng-template pTemplate="title"> Ajouter offre </ng-template>
+    <ng-template  pTemplate="content">
+        <div class="card justify-content-center">
+        <div class="flex flex-column md:flex-row xl:gap-8 sm:gap-3 mb-2 ">
+            <div class="flex flex-row ">
+                <div class="flex flex-column mb-2">
+                    <label for="titre">Titre</label>
+                    <div class="p-inputgroup">
+                        <input #titre="ngModel" id="titre" type="text" pInputText placeholder="Titre" [(ngModel)]="offre.titre"
+                            [ngClass]="{ 'ng-dirty': (titre.invalid && submitted) || (titre.dirty && titre.invalid) }" />
+                    </div>
+                    <small *ngIf="(titre.invalid && submitted) || (titre.dirty && titre.invalid)" class="p-error">Titre obligatoire.</small>
+                </div>
+            </div>
+            
+            <div class="flex flex-row ">
+                <div class="flex flex-column mb-2">
+                    <label for="pourcentage">Pourcentage</label>
+                    <div class="p-inputgroup">
+                        <input #pourcentage="ngModel" id="pourcentage" type="text" pInputText placeholder="pourcentage" [(ngModel)]="offre.pourcentage"
+                            [ngClass]="{ 'ng-dirty': (pourcentage.invalid && submitted) || (pourcentage.dirty && pourcentage.invalid) }" />
+                    </div>
+                    <small *ngIf="(pourcentage.invalid && submitted) || (pourcentage.dirty && pourcentage.invalid)" class="p-error">Pourcentage obligatoire.</small>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-column md:flex-row xl:gap-8 sm:gap-3 mb-2 ">
+            <div class="flex flex-row  w-15rem">
+                <div class="flex flex-column mb-2">
+                    <label for="dateDebut">Date debut</label>
+                    <div class="p-inputgroup w-15rem">
+                        <input #dateDebut="ngModel" id="dateDebut" type="date" pInputText [(ngModel)]="offre.dateDebut"
+                            [ngClass]="{ 'ng-dirty': (dateDebut.invalid && submitted) || (dateDebut.dirty && dateDebut.invalid) }" />
+                    </div>
+                    <small *ngIf="(dateDebut.invalid && submitted) || (dateDebut.dirty && dateDebut.invalid)" class="p-error">dateDebut obligatoire.</small>
+                </div>
+            </div>
+            
+            <div class="flex flex-row ">
+                <div class="flex flex-column mb-2 w-15rem ">
+                    <label for="dateFin">Date Fin</label>
+                    <div class="p-inputgroup w-15rem">
+                        <input #dateFin="ngModel" id="dateFin" type="date" pInputText placeholder="dateFin" [(ngModel)]="offre.dateFin"
+                            [ngClass]="{ 'ng-dirty': (dateFin.invalid && submitted) || (dateFin.dirty && dateFin.invalid) }" />
+                    </div>
+                    <small *ngIf="(dateFin.invalid && submitted) || (dateFin.dirty && dateFin.invalid)" class="p-error">DateFin obligatoire.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="grid grid-nogutter justify-content-between">
+            <p-button label="Back"icon="pi pi-angle-left"></p-button>
+            <p-button label="Complete" icon="pi pi-angle-right" iconPos="right" styleClass="p-button-success"></p-button>
+        </div>
+    </ng-template>
+   </p-card>
+
+    </div>

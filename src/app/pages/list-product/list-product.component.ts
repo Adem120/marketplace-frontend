@@ -3,18 +3,18 @@ import { Product } from 'src/app/model/product/product.module';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/service/product.service';
-import { FilterService, SelectItemGroup } from 'primeng/api';
 import { AutoCompleteCompleteEvent } from 'src/app/model/product/autocomplet.module';
 import { CategorieService } from 'src/app/service/categorie.service';
 import { Categorie } from 'src/app/model/product/categorie.module';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { TicketService } from 'src/app/service/ticketservice';
 
 @Component({
-    templateUrl: './crud.component.html',
+    templateUrl: './list-product.component.html',
     providers: [MessageService]
 })
-export class CrudComponent implements OnInit {
+export class ListProductComponent implements OnInit {
 
     productDialog: boolean = false;
 
@@ -24,7 +24,7 @@ export class CrudComponent implements OnInit {
 
     products: Product[] = [];
 
-    product: Product = {};
+    product:Product=new Product();
 
     selectedProducts: Product[] = [];
 
@@ -42,14 +42,18 @@ export class CrudComponent implements OnInit {
      subscription!: Subscription;
     categories: Categorie[] = [];
     items: MenuItem[] | undefined;
-
+   
     activeIndex: number = 0;
-   public  loading: boolean=true; ;
+     loading: boolean=false;    
+   image: any;
+   filtervalue:number=1;
 
     onActiveIndexChange(event: number) {
         this.activeIndex = event;
     }
-    constructor(private router: Router,private productService: ProductService, private messageService: MessageService,private categorieservice:CategorieService) { }
+    constructor(private router: Router,public productService: ProductService, private messageService: MessageService,private categorieservice:CategorieService,public tiketservice:TicketService) {
+
+     }
 
     ngOnInit() {
         this.categorieservice.getCategorie().subscribe(data =>{
@@ -76,21 +80,26 @@ export class CrudComponent implements OnInit {
         ];
     }
     getallproduct(){
+     this.loading=true;
        
     this.productService.getProducts().subscribe(
+       
         data => {
     this.products = data;
-    this.loading = false;
-    console.log(this.products);
-    console.log(this.loading);
+    
+   this.loading=false;
+   
             
         },
         error => {
             console.error('Error fetching products:', error);
-            this.loading = true;
-        }
+         this.loading=false;
+         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error fetching products', life: 3000 });
+
+
+        } )
+       
         
-    );
     }
     ngOnDestroy() {
         if (this.subscription) {
@@ -100,14 +109,16 @@ export class CrudComponent implements OnInit {
     openNew() {
        this.router.navigate(['pages/steps']);
     }
-
+   
+   
     deleteSelectedProducts() {
         this.deleteProductsDialog = true;
     }
 
     editProduct(product: Product) {
-        this.product = { ...product };
-        this.productDialog = true;
+        this.product = product;
+       this.productService.update(this.product);
+        this.router.navigate(['pages/steps/step1']);
     }
 
     deleteProduct(product: Product) {
@@ -182,6 +193,8 @@ export class CrudComponent implements OnInit {
 */
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+         this.filtervalue=table.filteredValue?.length as number; 
+         console.log(this.filtervalue);
     }
     filterCategorie(event: AutoCompleteCompleteEvent) {
         let filtered: Categorie[] = [];

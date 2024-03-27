@@ -1,42 +1,34 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Product } from '../model/product/product.module';
     
     @Injectable()
     export class TicketService {
-        ticketInformation = {
-            personalInformation: {
-                firstname: '',
-                lastname: '',
-                age: null
-            },
-            seatInformation: {
-                class: null,
-                wagon: null,
-                seat: null
-            },
-            paymentInformation: {
-                cardholderName: '',
-                cardholderNumber: '',
-                date: '',
-                cvv: '',
-                remember: false
-            }
-        };
-    
+        
+        public produit = new Product();
+        formData = new FormData();
         private paymentComplete = new Subject<any>();
-    
         paymentComplete$ = this.paymentComplete.asObservable();
     
-        getTicketInformation() {
-            return this.ticketInformation;
+        getProduitInformation() {
+            console.log(this.produit);
+            return this.produit;
         }
     
-        setTicketInformation(ticketInformation: any) {
-            this.ticketInformation = ticketInformation;
+        setProduitInformation(produit: Product) {
+            this.produit = produit;
+            console.log(produit);
+        }
+        getFormData() {
+            return this.formData;
+        }
+        setFormData(formData: FormData) {
+            this.formData = formData;
         }
     
         complete() {
-            this.paymentComplete.next(this.ticketInformation.personalInformation);
+            this.paymentComplete.next(this.produit);
         }
+     
     }
     

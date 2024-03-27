@@ -1,0 +1,119 @@
+
+<div class="grid">
+
+    <div class="col-12">
+        <p-breadcrumb class="max-w-full" [model]="items" [home]="home"></p-breadcrumb>
+        <div class="card px-6 py-6">
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple icon="pi pi-plus" label="New" class="p-button-success xl:mr-2 md:mr-2 sm:mr-2"(click)="openajouteroffre()"></button>
+                        <button pButton pRipple icon="pi pi-trash" label="Delete" class="p-button-danger"></button>
+                    </div>
+                </ng-template>
+            
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                </ng-template>
+            
+               
+            </p-toolbar>
+            
+    <p-table
+        #dt1
+        [value]="offres"
+        dataKey="id"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [paginator]="true"
+        [loading]="loading"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['titre']"
+        >
+         
+        <ng-template pTemplate="caption">
+            <div     class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 class="m-0">Les offres</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt1, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                </span>
+            </div>
+        </ng-template> 
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="min-width:10rem">
+                    <div class="flex align-items-center">
+                        Titre
+                        <p-columnFilter type="text" field="titre" display="menu" [showOperator]="false" [showAddButton]="false"></p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width:10rem">
+                    <div class="flex align-items-center">
+                        Pourcentage
+                        <p-columnFilter field="pourcentage" matchMode="between" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                            <ng-template pTemplate="filter" let-filter="filterCallback">
+                                <p-slider [ngModel]="activityValues" [range]="true" (onSlideEnd)="filter($event.values)" styleClass="m-3"></p-slider>
+                                <div class="flex align-items-center px-2">
+                                    <span>{{ activityValues[0] }}</span>
+                                    <span class="mx-2">-</span>
+                                    <span>{{ activityValues[1] }}</span>
+                                </div>
+                            </ng-template>
+                        </p-columnFilter>
+                    </div>
+                </th>
+              
+                <th style="min-width:10rem">
+                    <div class="flex align-items-center">
+                        Date debut
+                        <p-columnFilter type="date" field="dateDebut" display="menu" [showOperator]="false" [showAddButton]="false"></p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width:10rem">
+                    <div class="flex align-items-center">
+                        Date fin
+                        <p-columnFilter type="date" field="dateFin" display="menu" [showOperator]="false" [showAddButton]="false"></p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width:10rem">
+                    <div class="flex align-items-center">
+                        Etat
+                        <p-columnFilter type="boolean"  field="etat" display="menu" ></p-columnFilter>
+
+                    </div>
+                </th>
+              
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-offre>
+            <tr>
+                <td>
+                    {{ offre.titre }}
+                </td>
+                
+                <td class="justify-content-center">
+                    <span class="ml-1 vertical-align-middle align-content-center" >{{ offre.pourcentage }} %</span>
+                </td>
+                <td>
+                    {{ offre.dateDebut | date: 'MM/dd/yyyy' }}
+                </td>
+                <td>
+                    {{ offre.dateFin |  date: 'MM/dd/yyyy'}}
+                </td>
+                <td>
+                    <p-tag (click)="offre.etat==true" [value]="offre.etat === false ? 'Terminé' : 'En cours'" [severity]="getSeverity(offre.etat)"></p-tag>
+                </td>
+              
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">Aucun offre trouvé.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+</div>
+</div>

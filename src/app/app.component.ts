@@ -11,6 +11,7 @@ export class AppComponent implements OnInit{
   items!: MenuItem[];
   products: any[] = [];
   title = 'markentplace-frontend';
+  public role='admin'
   constructor(private productService: ProductService,private primengConfig: PrimeNGConfig) { }
   ngOnInit(): void {
     this.primengConfig.ripple = true;
@@ -21,4 +22,5 @@ export class AppComponent implements OnInit{
       { label: 'Remove', icon: 'pi pi-fw pi-minus' }
   ];
   }
+
 }

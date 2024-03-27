@@ -1,5 +1,6 @@
-export interface Image {
-    id?: string;
-    path?: string;
-    principale?: string;
+export class Photo {
+    nom?: string;
+    path?: any;
+    principale?: number;
+    type?: any;
     }

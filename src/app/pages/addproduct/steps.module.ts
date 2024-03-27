@@ -93,15 +93,14 @@ import { CardModule } from 'primeng/card';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ConfirmationDemo } from './confirmationdemo';
-import { PaymentDemo } from './paymentdemo';
-import { PersonalDemo } from './personaldemo';
-import { SeatDemo } from './seatdemo';
+import { Images } from './images';
+import { Produitsteps2 } from './produitstep2';
 import { StepsRoutingDemo } from './steps-routing-demo';
 import { TicketService } from 'src/app/service/ticketservice';
 import { StepsModule } from 'primeng/steps';
 import { CommonModule } from '@angular/common';
-import { DemoRoutingModule } from './demo-routing.module';
-
+import { AddproductRoutingModule } from './addproduct-routing.module';
+import { Produitstep1 } from './produitstep1';
 @NgModule({
   imports: [
     CommonModule,
@@ -196,11 +195,12 @@ import { DemoRoutingModule } from './demo-routing.module';
     TreeTableModule,
     AnimateModule,
     CardModule,
-    DemoRoutingModule,
+    AddproductRoutingModule,
     FileUploadModule ,
-    GalleriaModule 
+    GalleriaModule ,
+    InputTextareaModule 
   ],
-    declarations: [ PaymentDemo, PersonalDemo, SeatDemo, ConfirmationDemo,StepsRoutingDemo ],
+    declarations: [ Images, Produitstep1, Produitsteps2, ConfirmationDemo,StepsRoutingDemo ],
 
     providers: [ TicketService ]
 })

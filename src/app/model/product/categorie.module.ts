@@ -1,6 +1,6 @@
-export  interface Categorie {
-    id?: string;
-    nom?: string;
+export  class Categorie {
+    id?: number;
+    titre?: string;
     descreption?: string;
     }
    

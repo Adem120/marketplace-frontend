@@ -8,13 +8,14 @@ import { LayoutService } from "./service/app.layout.service";
     styles: [`
     .badge {
     position: absolute;
-    top: 12px;
-    right: 50px;
-    background-color: red;
+    top: 0px;
+    left:28px;
     color: white;
-    border-radius: 50%;
-    padding: 5px;
-    font-size: 7px;
+    border-radius: 60%;
+    font-size:1.5rem;
+    width:15px;
+
+    background-color:red;
 }
 `]
 })
